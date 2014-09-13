@@ -12,6 +12,7 @@
     NSMutableArray *homeItemsArray;
 }
 @property (weak, nonatomic) IBOutlet UIImageView *homeImage;
+@property (weak, nonatomic) IBOutlet UIImageView *logo;
 @property (weak, nonatomic) IBOutlet UITableView *homeTable;
 
 @end
@@ -34,7 +35,9 @@
 {
     [super viewDidLoad];
     
-    self.homeTable.rowHeight = 60;
+    self.homeTable.rowHeight = 61;
+    self.homeTable.alwaysBounceVertical = NO;
+    self.homeTable.separatorStyle = UITableViewCellSeparatorStyleNone;
     //[self.homeTable setBackgroundColor:[UIColor clearColor]];
     homeItemsArray = [[NSMutableArray alloc] init];
     
@@ -69,6 +72,8 @@
     //Load Bkg
     UIImage *image = [UIImage imageNamed:@"sf"];
     [self.homeImage setImage:image];
+    UIImage *logoImage = [UIImage imageNamed:@"logo"];
+    [self.logo setImage:logoImage];
 }
 
 - (void)didReceiveMemoryWarning
@@ -76,6 +81,7 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 
 #pragma mark - Table view Data Source
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

@@ -26,6 +26,7 @@
 		FDC949ED19BE4323009A681C /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FDC949E819BE4323009A681C /* HomeViewController.m */; };
 		FDC949EE19BE4323009A681C /* Quotes.plist in Resources */ = {isa = PBXBuildFile; fileRef = FDC949E919BE4323009A681C /* Quotes.plist */; };
 		FDC949EF19BE4323009A681C /* QuoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FDC949EB19BE4323009A681C /* QuoteViewController.m */; };
+		FDEA38FB19C4E60D0073CBE8 /* TransparentNav.m in Sources */ = {isa = PBXBuildFile; fileRef = FDEA38FA19C4E60D0073CBE8 /* TransparentNav.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,8 @@
 		FDC949E919BE4323009A681C /* Quotes.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Quotes.plist; sourceTree = "<group>"; };
 		FDC949EA19BE4323009A681C /* QuoteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuoteViewController.h; sourceTree = "<group>"; };
 		FDC949EB19BE4323009A681C /* QuoteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuoteViewController.m; sourceTree = "<group>"; };
+		FDEA38F919C4E60D0073CBE8 /* TransparentNav.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransparentNav.h; sourceTree = "<group>"; };
+		FDEA38FA19C4E60D0073CBE8 /* TransparentNav.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransparentNav.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +127,8 @@
 		FDC949B419BE42C7009A681C /* KMCSF */ = {
 			isa = PBXGroup;
 			children = (
+				FDEA38F919C4E60D0073CBE8 /* TransparentNav.h */,
+				FDEA38FA19C4E60D0073CBE8 /* TransparentNav.m */,
 				FD8B7A6319C4C5CE00553D34 /* HomeItem.h */,
 				FD8B7A6419C4C5CE00553D34 /* HomeItem.m */,
 				FDC949E719BE4323009A681C /* HomeViewController.h */,
@@ -273,6 +278,7 @@
 			files = (
 				FDC949BF19BE42C7009A681C /* AppDelegate.m in Sources */,
 				FDC949EF19BE4323009A681C /* QuoteViewController.m in Sources */,
+				FDEA38FB19C4E60D0073CBE8 /* TransparentNav.m in Sources */,
 				FD8B7A6519C4C5CE00553D34 /* HomeItem.m in Sources */,
 				FDC949BB19BE42C7009A681C /* main.m in Sources */,
 				FDC949ED19BE4323009A681C /* HomeViewController.m in Sources */,
