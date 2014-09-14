@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "HomeItem.h"
+#import "QuoteViewController.h"
 
 @interface HomeViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 

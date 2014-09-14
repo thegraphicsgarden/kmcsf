@@ -113,9 +113,18 @@
     return cell;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return [indexPath row] * 20;
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    /*NSString *segueIdentifier = @"quotes";//or whatever logic you need to determined the appropriate identifier
+    id sender = self;//or whatever object you want to be the sender
+    [self performSegueWithIdentifier:segueIdentifier sender:sender];*/
+    
+    switch (indexPath.row) {
+        case 0: [self performSegueWithIdentifier:@"upcomingClasses" sender:self]; break;
+        case 1: [self performSegueWithIdentifier:@"quotes" sender:self]; break;
+        case 2: [self performSegueWithIdentifier:@"goodAdvice" sender:self]; break;
+        case 3: [self performSegueWithIdentifier:@"meditationTimer" sender:self]; break;
+        default: break;
+    }
 }
 
 /*
@@ -126,6 +135,13 @@
 {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    if ([[segue identifier] isEqualToString:@"quotes"]) {
+        //preparation
+        QuoteViewController *destViewController = segue.destinationViewController;
+    } else if ([[segue identifier] isEqualToString:@"meditationTimer"]) {
+        //other preparation
+        QuoteViewController *destViewController = segue.destinationViewController;
+    }
 }
 */
 

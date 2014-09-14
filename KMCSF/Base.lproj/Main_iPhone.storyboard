@@ -5,6 +5,25 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <scenes>
+        <!--View Controller-->
+        <scene sceneID="PbZ-LR-y9U">
+            <objects>
+                <viewController id="AbW-NJ-wlg" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="bOc-s7-x26"/>
+                        <viewControllerLayoutGuide type="bottom" id="FAY-ij-1mN"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="EXf-iM-oGe">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="6Qc-P3-xSx"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6yf-tu-YqC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1439" y="-532"/>
+        </scene>
         <!--Quote View Controller-->
         <scene sceneID="mM9-WB-HL7">
             <objects>
@@ -102,13 +121,11 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.02745098248" green="0.98039221759999995" blue="0.94117653369999998" alpha="1" colorSpace="deviceRGB"/>
-                                        <connections>
-                                            <segue destination="ntR-60-DDD" kind="push" id="XPa-dW-bH1"/>
-                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="ddy-ns-O3u" id="bjf-Dh-KAE"/>
+                                    <outlet property="delegate" destination="ddy-ns-O3u" id="XEd-KA-Vpn"/>
                                 </connections>
                             </tableView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qTm-mT-5DI">
@@ -122,11 +139,13 @@
                         <outlet property="homeImage" destination="5pJ-xM-4sC" id="uhn-BS-md2"/>
                         <outlet property="homeTable" destination="QXe-rJ-Gtc" id="Tna-86-gdF"/>
                         <outlet property="logo" destination="qTm-mT-5DI" id="wkF-9y-upG"/>
+                        <segue destination="AbW-NJ-wlg" kind="push" identifier="meditationTimer" id="NaL-wS-Yea"/>
+                        <segue destination="ntR-60-DDD" kind="push" identifier="quotes" id="F6g-xN-eD2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="R0y-9U-WqR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1034" y="148"/>
+            <point key="canvasLocation" x="1016" y="148"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="0hh-Fc-4De">
