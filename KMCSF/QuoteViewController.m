@@ -14,6 +14,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *quoteImage;
 @property (weak, nonatomic) IBOutlet UITableView *quoteTable;
 @property (weak, nonatomic) IBOutlet UILabel *inspirationQuote;
+@property (weak, nonatomic) IBOutlet UILabel *inspirationDate;
 
 @end
 
@@ -47,8 +48,23 @@
     quoteDates = quoteDetails.allKeys;
 
     //Load Today's Quote
+    QuoteItem *todaysQuote = [[QuoteItem alloc] init];
+    todaysQuote = [quoteArray objectAtIndex:0];
+    
+    //Setup and Deliver the Date
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"EEEE, MMMM dd"];
+    self.inspirationDate.text = [NSString stringWithFormat:@"from Today (%@)", [dateFormatter stringFromDate:[todaysQuote date]] ];
+    
+    //Setup and Deliver the Quote, Author, and (if needed) text
+    NSString *quoteString = [NSString stringWithFormat:@"%@\n- %@", [todaysQuote quote], [todaysQuote author]];
+    if([todaysQuote text].length != 0){
+        quoteString = [NSString stringWithFormat:@"%@, %@", quoteString, [todaysQuote text]];
+    }
+    self.inspirationQuote.text = [NSString stringWithFormat:@"%@", quoteString];
+    
+    //Setup the Color scheme and other formatting
     self.inspirationQuote.textColor = [UIColor whiteColor];
-    self.inspirationQuote.text = @"Select a topic below to find good advice for difficult circumstances.";
     self.inspirationQuote.numberOfLines = 0;
     self.inspirationQuote.frame = CGRectMake(20,20,200,800);
     [self.inspirationQuote sizeToFit];
@@ -98,6 +114,22 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - Social Media Sharing
+- (IBAction)shareAction:(id)sender {
+    //NSLog(@"share");
+    if([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]) {
+        SLComposeViewController *controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+        
+        [controller setInitialText:[NSString stringWithFormat:@"%@\n\n---\nInspirational Quote from Kadampa Meditation Center San Francisco's iPhone App", self.inspirationQuote.text] ];
+        [controller addURL:[NSURL URLWithString:@"http://meditationinsanfrancisco.org"]];
+        [controller addImage:[UIImage imageNamed:@"logo"]];
+        
+        [self presentViewController:controller animated:YES completion:Nil];
+    }
+}
+
+
+
 #pragma mark - Table view Data Source
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
@@ -136,10 +168,18 @@
     //self.curIndexPath = indexPath;
     QuoteItem *current = [quoteArray objectAtIndex:indexPath.row];
 
-    self.inspirationQuote.text = [NSString stringWithFormat:@"%@", [current quote]];
-    //self.adviceTitle.text = [NSString stringWithFormat:@"Good Advice for %@", current.delusion];
+    //Setup and Deliver the Quote, Author, and (if needed) text
+    //Setup and Deliver the Quote, Author, and (if needed) text
+    NSString *quoteString = [NSString stringWithFormat:@"%@\n- %@", [current quote], [current author]];
+    if([current text].length != 0){
+        quoteString = [NSString stringWithFormat:@"%@, %@", quoteString, [current text]];
+    }
+    self.inspirationQuote.text = [NSString stringWithFormat:@"%@", quoteString];
     
-    //NSLog(@"%d", wasSeen);
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"EEEE, MMMM dd"];
+    self.inspirationDate.text = [NSString stringWithFormat:@"from %@", [dateFormatter stringFromDate:[current date]] ];
+
 }
 /*
 #pragma mark - Navigation

@@ -15,6 +15,7 @@
 		FD21F7C11A25800200E0E207 /* Inspirations.json in CopyFiles */ = {isa = PBXBuildFile; fileRef = FD21F7BF1A257FE300E0E207 /* Inspirations.json */; };
 		FD21F7C31A29198500E0E207 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD21F7C21A29198500E0E207 /* Social.framework */; };
 		FD21F7C61A29342400E0E207 /* QuoteItem.m in Sources */ = {isa = PBXBuildFile; fileRef = FD21F7C51A29342400E0E207 /* QuoteItem.m */; };
+		FD21F7C91A2A444700E0E207 /* ClassViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD21F7C81A2A444700E0E207 /* ClassViewController.m */; };
 		FD3953F919C8FA760070E650 /* MuseoSans_300.otf in Resources */ = {isa = PBXBuildFile; fileRef = FD3953F819C8FA760070E650 /* MuseoSans_300.otf */; };
 		FD3953FC19C8FD140070E650 /* ColorPalette.m in Sources */ = {isa = PBXBuildFile; fileRef = FD3953FB19C8FD140070E650 /* ColorPalette.m */; };
 		FD7151E91A1932F200F91ECE /* Delusions.json in Resources */ = {isa = PBXBuildFile; fileRef = FD7151E71A1932F200F91ECE /* Delusions.json */; };
@@ -81,6 +82,8 @@
 		FD21F7C21A29198500E0E207 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		FD21F7C41A29342400E0E207 /* QuoteItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuoteItem.h; sourceTree = "<group>"; };
 		FD21F7C51A29342400E0E207 /* QuoteItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuoteItem.m; sourceTree = "<group>"; };
+		FD21F7C71A2A444700E0E207 /* ClassViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassViewController.h; sourceTree = "<group>"; };
+		FD21F7C81A2A444700E0E207 /* ClassViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassViewController.m; sourceTree = "<group>"; };
 		FD3953F819C8FA760070E650 /* MuseoSans_300.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MuseoSans_300.otf; sourceTree = "<group>"; };
 		FD3953FA19C8FD140070E650 /* ColorPalette.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorPalette.h; sourceTree = "<group>"; };
 		FD3953FB19C8FD140070E650 /* ColorPalette.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColorPalette.m; sourceTree = "<group>"; };
@@ -198,6 +201,8 @@
 				FD8B7A6419C4C5CE00553D34 /* HomeItem.m */,
 				FDC949E719BE4323009A681C /* HomeViewController.h */,
 				FDC949E819BE4323009A681C /* HomeViewController.m */,
+				FD21F7C71A2A444700E0E207 /* ClassViewController.h */,
+				FD21F7C81A2A444700E0E207 /* ClassViewController.m */,
 				FDC949EA19BE4323009A681C /* QuoteViewController.h */,
 				FDC949EB19BE4323009A681C /* QuoteViewController.m */,
 				FD21F7C41A29342400E0E207 /* QuoteItem.h */,
@@ -375,6 +380,7 @@
 				FDC949BB19BE42C7009A681C /* main.m in Sources */,
 				FDA6212319C61CF6008D63C2 /* AdviceItem.m in Sources */,
 				FD21F7C61A29342400E0E207 /* QuoteItem.m in Sources */,
+				FD21F7C91A2A444700E0E207 /* ClassViewController.m in Sources */,
 				FD3953FC19C8FD140070E650 /* ColorPalette.m in Sources */,
 				FD7151F31A20297700F91ECE /* Quote.m in Sources */,
 				FDC949ED19BE4323009A681C /* HomeViewController.m in Sources */,
