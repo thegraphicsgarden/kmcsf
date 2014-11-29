@@ -7,6 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "QuoteItem.h"
+#import "ColorPalette.h"
+#import "Quote.h"
 
 @interface QuoteViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 

@@ -1,0 +1,174 @@
+[
+  { 
+    "delusion": "Anger",
+    "synonyms": ["Hatred", "Aversion", "Frustration"],
+    "quotes": [
+      {   
+        "quote":"\"By keeping a peaceful mind in difficult situation we are far more likely to find solutions and respond constructively\"",
+        "author":"Geshe Kelsang Gyatso",
+        "text":""
+      },
+      {   
+        "quote":"\"With patience, we maintain an inner peace and tranquility that allows spiritual realizations to grow\"",
+        "author": "Geshe Kelsang Gyatso",
+        "text":""
+      },
+      {
+        "quote": "\"If we really want to get rid of all enemies, all we need to do is uproot our own anger.\"",
+        "author": "Geshe Kelsang Gyatso",
+        "text": ""
+      }
+    ]
+  },
+
+  { 
+    "delusion": "Attachment",
+    "synonyms": ["Desirous Attachment"],
+    "quotes": [
+      {   
+        "quote":"\"Even when we get what we want, we do not get it in the way we want. We possess the object but we get no satisfaction from possessing it.\"",
+        "author":"Geshe Kelsang Gyatso",
+        "text":""
+      },
+      {   
+        "quote":"\"Buddha said that all phenomena are like dreams in that they are mere appearances to mind.\"",
+        "author":"Geshe Kelsang Gyatso",
+        "text":""
+      },
+      {   
+        "quote":"\"We cannot assume that our future lives are a long way off; we could find ourself thrown into our next life today.\"",
+        "author":"Geshe Kelsang Gyatso",
+        "text":""
+      },
+      {
+        "quote": "\"Until now we have been trying to change the world, but this clearly has not worked. Now we need to change our mind.\"",
+        "author": "Geshe Kelsang Gyatso",
+        "text": ""
+      }
+    ]
+  },
+  { 
+    "delusion": "Ignorance",
+    "synonyms": ["Confusion", "Self-Grasping"],
+    "quotes": [
+      {
+       "quote": "\"The mind does not exist from its own side.\"",
+       "author": "Geshe Kelsang Gyatso",
+       "text": "Universal Compassion"
+      }
+    ]
+  },
+  { 
+    "delusion": "Impatience",
+    "quotes": [
+      {   
+        "quote":"\"Adverse conditions are mere imputations by conceptual minds that label them 'adverse'; they do not exist inherently.\"",
+        "author":"Geshe Kelsang Gyatso",
+        "text":""
+      },
+      {   
+        "quote":"\"In the practice of traing the mind we rely upon our own inner strength rather than upon external conditions.\"",
+        "author":"Geshe Kelsang Gyatso",
+        "text":""
+      },
+      {
+        "quote": "\"In samsara, aggravation and frustration are the natural state of affairs.\"",
+        "author": "Geshe Kelsang Gyatso",
+        "text": "Introduction to Buddhism"
+      },
+      {
+        "quote": "\"We can either try to change to whole world to make it conform to our wishes, or we can change our mind.\"",
+        "author": "Geshe Kelsang Gyatso",
+        "text": ""
+      },
+      {
+        "quote": "\"The very manifestation of suffering should remind us of its cause, our own negative actions.\"",
+        "author": "Geshe Kelsang Gyatso",
+        "text": "Universal Compassion"
+      },
+      {
+        "quote": "\"With a contented mind we shall be happy even without wealth; but if we have a discontented mind we shall be unhappy no matter how rich we may become.\"",
+        "author": "Geshe Kelsang Gyatso",
+        "text": "Universal Compassion"
+      }
+    ]
+  },
+  { 
+    "delusion": "Jealousy",
+    "quotes": [
+      {   
+        "quote":"\"Lorem ipsum...\"",
+        "author":"Geshe Kelsang Gyatso",
+        "text":""
+      }
+    ]
+  },
+  {
+    "delusion": "Laziness",
+    "quotes": [
+      { 
+        "quote": "\"If we could be certain that this life will last for a long time we could afford to be carefree and unconcerned, but every day we hear of people dying unexpectedly of heart attacks or strokes, in car crashes, and so forth. Human life is very uncertain.\"",
+        "author": "Geshe Kelsang Gyatso",
+        "text": "Universal Compassion"
+      },
+      {
+        "quote": "\"Our preoccupation with trivial, mundane activities causes us to waste our precious human life.\"",
+        "author": "Geshe Kelsang Gyatso",
+        "text": "Introduction to Buddhism",
+        "related-delusions": ["Attachment"]
+      },
+      {
+        "quote": "\"It would be a great shame if we were to use our precious human life only to achieve results that even animals can achieve.\"",
+        "author": "Geshe Kelsang Gyatso",
+        "text": "The New Meditation Handbook",
+        "related-delusions": ["Attachment"]
+      },
+      {
+        "quote": "\"A human life has almost limitless potential, but we will be able to realize this potential only if we first learn to appreciate it.\"",
+        "author": "Geshe Kelsang Gyatso",
+        "text": ""
+      }
+    ]
+  },
+  { 
+    "delusion": "Pride",
+    "quotes": [
+      {   
+        "quote":"\"Lorem ipsum...\"",
+        "author":"Geshe Kelsang Gyatso",
+        "text":""
+      }
+    ]
+  },
+  { 
+    "delusion": "Selfishness",
+    "quotes": [
+      {   
+        "quote":"\"Living beings commit negative actions such as killing out of concern for their own welfare.\"",
+        "author":"Geshe Kelsang Gyatso",
+        "text":""
+      },
+      {
+        "quote": "\"Whereas each one of us is just one single person, other people are countless in number; therefore the happiness of others is much more important than our own happiness.\"",
+        "author": "Geshe Kelsang Gyatso",
+        "text": "The New Meditation Handbook"
+      },
+      {
+        "quote": "\"Nothing causes us greater harm than this demon of self-cherishing; it is the source of all negativity and all misfortune.\"",
+        "author": "Geshe Kelsang Gyatso",
+        "text": "The New Meditation Handbook"
+      },
+      {
+        "quote": "\"Whenever we experience difficulties or suffering we should not blame other people or the external situation - rather we should remember that ultimately all our problems arise from self-cherishing.\"",
+        "author": "Geshe Kelsang Gyatso",
+        "text": "The New Meditation Handbook",
+        "related-delusions": ["Impatience"]
+      },
+      {
+        "quote": "\"f we think clearly we shall realize that all our present and future happiness depends upon our cherishing others.\"",
+        "author": "Geshe Kelsang Gyatso",
+        "text": "The New Meditation Handbook"
+      }
+    ]
+  }
+]

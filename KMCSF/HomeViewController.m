@@ -38,7 +38,7 @@
     self.homeTable.rowHeight = 61;
     self.homeTable.alwaysBounceVertical = NO;
     self.homeTable.separatorStyle = UITableViewCellSeparatorStyleNone;
-    //[self.homeTable setBackgroundColor:[UIColor clearColor]];
+    [self.homeTable setBackgroundColor:[UIColor clearColor]];
     homeItemsArray = [[NSMutableArray alloc] init];
     
     HomeItem *menuItem = [[HomeItem alloc] init];
@@ -105,7 +105,6 @@
     cell.textLabel.text = [current title];
     cell.detailTextLabel.text = [current subtitle];
     cell.textLabel.textColor = [UIColor whiteColor];
-    cell.detailTextLabel.textColor = [UIColor whiteColor];
     
     cell.backgroundColor = [current bkgColor];
     cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"accessory"]];
