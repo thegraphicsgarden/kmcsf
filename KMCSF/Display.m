@@ -88,7 +88,7 @@ static CGFloat deviceScreenWidth;
     view.transform = CGAffineTransformTranslate(view.transform, 0.01, 0.01);
 }
 
-// Spin an Image
+// Spin an Image for loading with the dharma wheel graphic
 + (void)runSpinAnimationOnView:(UIView*)view duration:(CGFloat)duration rotations:(CGFloat)rotations repeat:(float)repeat {
     CABasicAnimation* rotationAnimation;
     rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];

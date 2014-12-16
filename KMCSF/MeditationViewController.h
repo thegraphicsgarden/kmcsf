@@ -9,6 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "Display.h"
 
-@interface MeditationViewController : UIViewController
+@interface MeditationViewController : UIViewController {
+
+    NSTimer *timer;
+
+}
 
 @end

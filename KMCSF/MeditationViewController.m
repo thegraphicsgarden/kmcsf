@@ -10,9 +10,12 @@
 
 CGFloat deltaTime = 0;
 CGFloat lastUserTime = 0;
-CGFloat userStartTime = 0.0;    //minutes
-CGFloat minTime = 0.0;          //minutes
-CGFloat maxTime = 60.0;         //minutes
+CGFloat userStartTime = 0.0;            //minutes
+NSInteger currentTimeInSeconds = 0;     //seconds
+NSInteger currentMinutes = 0;
+NSInteger currentSeconds = 0;
+CGFloat minTime = 0.0;                  //minutes
+CGFloat maxTime = 60.0;                 //minutes
 CGFloat scrollFactor = 20.0;
 
 CGPoint startLocation;
@@ -50,6 +53,7 @@ BOOL countingDown = NO;
     } else if (userStartTime > maxTime) {
         userStartTime = maxTime;
     }
+    currentTimeInSeconds = 60*(NSInteger)userStartTime;
     [self updateTimeLabel:(NSInteger)userStartTime];
 }
 
@@ -72,19 +76,26 @@ BOOL countingDown = NO;
 /********************************/
 /* Starting/Cancelling Timer    */
 /********************************/
+- (void)displayTime {
+    currentSeconds = currentTimeInSeconds%60;
+    currentMinutes = currentTimeInSeconds/60;
+    self.timeLabel.text = [NSString stringWithFormat:@"%zd:%.2zd",currentMinutes,currentSeconds];
+}
 - (void)startTimer {
-    NSLog(@"starting");
+    currentTimeInSeconds--;
+    [self displayTime];
+    if(currentTimeInSeconds <=0) {
+        [timer invalidate];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Meditation Complete" message:@"Well Done!" delegate:nil cancelButtonTitle:@"Awesome" otherButtonTitles:nil];
+        [alertView show];
+    }
 }
-- (void)pauseTimer {
-    NSLog(@"paused");
-}
-
 - (IBAction)playPauseTimer:(id)sender {
     if(userStartTime > minTime) {
         if(!countingDown) {
-            [self startTimer];
+            timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(startTimer) userInfo:nil repeats:YES];
         } else {
-            [self pauseTimer];
+            [timer invalidate];
         }
         countingDown = !countingDown;
     }
