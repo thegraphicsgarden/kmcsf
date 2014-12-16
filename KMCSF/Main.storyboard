@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="2jV-gX-kTD">
     <dependencies>
+        <deployment defaultVersion="1808" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -823,15 +824,30 @@
                                     <action selector="playPauseTimer:" destination="O0X-1g-ePO" eventType="touchUpInside" id="30W-zk-yPl"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qw3-Mp-xh2">
+                                <rect key="frame" x="442" y="485" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="b4K-lP-ztq"/>
+                                    <constraint firstAttribute="height" constant="50" id="kGi-8K-3Z6"/>
+                                </constraints>
+                                <state key="normal" backgroundImage="facebook">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="cancelTimer:" destination="O0X-1g-ePO" eventType="touchUpInside" id="iUY-5x-3BV"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="jhd-zZ-2pn" firstAttribute="centerY" secondItem="8Aj-EX-xSF" secondAttribute="centerY" id="86L-zS-zB6"/>
                             <constraint firstItem="kgh-NZ-uhB" firstAttribute="centerY" secondItem="7F8-BY-8bp" secondAttribute="top" multiplier="0.85" id="Cj9-cC-PGH"/>
                             <constraint firstItem="jhd-zZ-2pn" firstAttribute="centerX" secondItem="8Aj-EX-xSF" secondAttribute="centerX" id="Fgt-wp-QkL"/>
+                            <constraint firstItem="Qw3-Mp-xh2" firstAttribute="centerX" secondItem="8Aj-EX-xSF" secondAttribute="trailingMargin" multiplier="0.8" id="PAg-cJ-Djp"/>
                             <constraint firstAttribute="height" secondItem="jhd-zZ-2pn" secondAttribute="height" id="RDE-sh-u9d"/>
                             <constraint firstItem="ftD-WX-6DS" firstAttribute="centerX" secondItem="8Aj-EX-xSF" secondAttribute="centerX" id="ZBK-bS-zKK"/>
                             <constraint firstItem="kgh-NZ-uhB" firstAttribute="centerX" secondItem="8Aj-EX-xSF" secondAttribute="trailingMargin" multiplier="0.2" id="aDP-Mp-Ebz"/>
+                            <constraint firstItem="Qw3-Mp-xh2" firstAttribute="centerY" secondItem="7F8-BY-8bp" secondAttribute="top" multiplier="0.85" id="aEp-MF-8tL"/>
                             <constraint firstItem="bFP-SS-q0j" firstAttribute="centerY" secondItem="8Aj-EX-xSF" secondAttribute="centerY" id="mWL-5I-3VP"/>
                             <constraint firstItem="ftD-WX-6DS" firstAttribute="centerY" secondItem="8Aj-EX-xSF" secondAttribute="centerY" id="qz7-K2-vcS"/>
                             <constraint firstAttribute="width" secondItem="jhd-zZ-2pn" secondAttribute="width" id="rS9-tD-c16"/>
@@ -839,6 +855,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="cancel" destination="Qw3-Mp-xh2" id="YMS-mh-IR2"/>
                         <outlet property="dharmaWheel" destination="bFP-SS-q0j" id="57e-a2-bCG"/>
                         <outlet property="playPause" destination="kgh-NZ-uhB" id="RpV-iH-lkM"/>
                         <outlet property="timeLabel" destination="ftD-WX-6DS" id="xPt-Aa-QnF"/>

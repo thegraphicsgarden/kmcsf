@@ -76,6 +76,8 @@ static CGFloat deviceScreenWidth;
     scale.toValue = @(1.0);
     [view.layer addAnimation:scale forKey:scale.keyPath];
     view.transform = CGAffineTransformTranslate(view.transform, 1.0, 1.0);
+    
+    
 }
 + (void)bounceOutViewScale:(UIView *)view {
     JNWSpringAnimation *scale = [JNWSpringAnimation animationWithKeyPath:@"transform.scale"];

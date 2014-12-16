@@ -10,12 +10,12 @@
 
 CGFloat deltaTime = 0;
 CGFloat lastUserTime = 0;
-CGFloat userStartTime = 0.0;            //minutes
+NSInteger userStartTimeInMinutes = 0;   //minutes
 NSInteger currentTimeInSeconds = 0;     //seconds
 NSInteger currentMinutes = 0;
 NSInteger currentSeconds = 0;
-CGFloat minTime = 0.0;                  //minutes
-CGFloat maxTime = 60.0;                 //minutes
+NSInteger minTime = 0.0;                  //minutes
+NSInteger maxTime = 60;                 //minutes
 CGFloat scrollFactor = 20.0;
 
 CGPoint startLocation;
@@ -25,8 +25,8 @@ BOOL countingDown = NO;
 @interface MeditationViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *timeLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *dharmaWheel;
-
 @property (weak, nonatomic) IBOutlet UIButton *playPause;
+@property (weak, nonatomic) IBOutlet UIButton *cancel;
 
 
 @property (strong, nonatomic) NSMutableArray *icons;
@@ -39,59 +39,64 @@ BOOL countingDown = NO;
 /********************************/
 /* Setting Timer                */
 /********************************/
-- (void)updateTimeLabel:(NSInteger)time {
-    self.timeLabel.text = [NSString stringWithFormat:@"%d:00",time];
+- (void)updateTimeLabelAtStart:(NSInteger)time {
+    self.timeLabel.text = [NSString stringWithFormat:@"%zd:00",time];
 }
 - (IBAction)setTimer:(UIPanGestureRecognizer *)panGestureRecognizer {
     CGPoint touchLocation = [panGestureRecognizer locationInView:self.view];
     CGFloat percentChange = (startLocation.y - touchLocation.y)/startLocation.y;
     
-    userStartTime = scrollFactor*(percentChange) + lastUserTime;
+    userStartTimeInMinutes = scrollFactor*(percentChange) + lastUserTime;
     
-    if (userStartTime < minTime ) {
-        userStartTime = minTime;
-    } else if (userStartTime > maxTime) {
-        userStartTime = maxTime;
+    if (userStartTimeInMinutes < minTime ) {
+        userStartTimeInMinutes = minTime;
+    } else if (userStartTimeInMinutes > maxTime) {
+        userStartTimeInMinutes = maxTime;
     }
-    currentTimeInSeconds = 60*(NSInteger)userStartTime;
-    [self updateTimeLabel:(NSInteger)userStartTime];
+    currentTimeInSeconds = 60*userStartTimeInMinutes;
+    [self updateTimeLabelAtStart:userStartTimeInMinutes];
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    lastUserTime = userStartTime;
+    lastUserTime = userStartTimeInMinutes;
     UITouch *touch = [[event allTouches] anyObject];
     startLocation = [touch locationInView:self.view];
 }
 
 /********************************/
-/* Starting/Cancelling Timer    */
-/********************************
+/* Cancelling Timer             */
+/********************************/
 - (IBAction)cancelTimer:(id)sender {
+    [timer invalidate];
+    currentTimeInSeconds = userStartTimeInMinutes = 0.0;;
+    [self updateTimeLabelAtStart:currentTimeInSeconds];
     countingDown = NO;
-    
-    NSLog(@"cancelled");
-}*/
-
+}
 
 /********************************/
-/* Starting/Cancelling Timer    */
+/* Starting/Pausing Timer       */
 /********************************/
-- (void)displayTime {
+-(void)timeCompleted {
+    [timer invalidate];
+    AudioServicesPlaySystemSound(PlaySoundID);
+    NSString *completeMessage = [NSString stringWithFormat:@"%zd Minute Meditation Complete",userStartTimeInMinutes];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:completeMessage message:@"Well Done!" delegate:nil cancelButtonTitle:@"Awesome" otherButtonTitles:nil];
+    [alertView show];
+}
+- (void)updateTimeDisplay {
     currentSeconds = currentTimeInSeconds%60;
     currentMinutes = currentTimeInSeconds/60;
     self.timeLabel.text = [NSString stringWithFormat:@"%zd:%.2zd",currentMinutes,currentSeconds];
 }
 - (void)startTimer {
     currentTimeInSeconds--;
-    [self displayTime];
+    [self updateTimeDisplay];
     if(currentTimeInSeconds <=0) {
-        [timer invalidate];
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Meditation Complete" message:@"Well Done!" delegate:nil cancelButtonTitle:@"Awesome" otherButtonTitles:nil];
-        [alertView show];
+        [self timeCompleted];
     }
 }
 - (IBAction)playPauseTimer:(id)sender {
-    if(userStartTime > minTime) {
+    if(userStartTimeInMinutes > minTime) {
         if(!countingDown) {
             timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(startTimer) userInfo:nil repeats:YES];
         } else {
@@ -101,6 +106,9 @@ BOOL countingDown = NO;
     }
 }
 
+/********************************/
+/* View Did Load                */
+/********************************/
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -109,18 +117,13 @@ BOOL countingDown = NO;
     [Display fadeInView:self.timeLabel toAlpha:1];
     [Display fadeInView:self.dharmaWheel toAlpha:.15];
     self.playPause.hidden = YES;
-    [self.icons addObject:self.playPause];
-    [Display bottomUpBounceIn:self.playPause];
-    /*NSLog(@"%@",NSStringFromCGRect(self.dharmaWheel.frame));
-    [self.dharmaWheel setAlpha:1.0];
-
-    NSLog(@"2");
-    self.pauseResume.hidden = YES;
-    self.icons = [[NSMutableArray alloc] init];
-    [self.icons addObject:self.pauseResume];
+    self.cancel.hidden = YES;
     
-    NSLog(@"3");
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+    self.icons = [[NSMutableArray alloc] init];
+    [self.icons addObject:self.playPause];
+    [self.icons addObject:self.cancel];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, .25 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         CGFloat diff = 0.15;
         for(NSUInteger i = 0; i < [self.icons count]; i++) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, diff*i * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
@@ -129,7 +132,9 @@ BOOL countingDown = NO;
             });
         }
     });
-    NSLog(@"4");*/
+    
+    NSURL *SoundURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"bell1" ofType:@"wav"]];
+    AudioServicesCreateSystemSoundID((__bridge CFURLRef)SoundURL, &PlaySoundID);
 }
 
 - (void)didReceiveMemoryWarning {

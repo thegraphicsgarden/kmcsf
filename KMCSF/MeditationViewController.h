@@ -7,12 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AudioToolbox/AudioToolbox.h>
+
 #import "Display.h"
 
 @interface MeditationViewController : UIViewController {
 
     NSTimer *timer;
 
+    //to play chime when finished meditating
+    SystemSoundID PlaySoundID;
 }
 
 @end
