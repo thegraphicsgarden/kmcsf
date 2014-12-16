@@ -12,12 +12,13 @@
     NSMutableArray *adviceArray;
     NSString *initialAdviceQuote;
 }
-@property (weak, nonatomic) IBOutlet UIImageView *adviceImage;
+@property (weak, nonatomic) IBOutlet UIImageView *adviceBkgImg;
 @property (weak, nonatomic) IBOutlet UITableView *adviceTable;
 @property (weak, nonatomic) IBOutlet UILabel *adviceQuote;
 @property (weak, nonatomic) IBOutlet UILabel *adviceTitle;
-
-//@property (strong, nonatomic) NSString *curDelusion;
+@property (weak, nonatomic) IBOutlet UIButton *shareBtn;
+@property (weak, nonatomic) IBOutlet UILabel *promptLabel;
+@property (nonatomic) BOOL adviceSelected;
 @property (strong, nonatomic) NSIndexPath *curIndexPath;
 
 @end
@@ -27,16 +28,19 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // Do any additional setup after loading the view.
-    self.adviceTable.rowHeight = 61;
-    self.adviceTable.alwaysBounceVertical = NO;
-    self.adviceTable.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.adviceSelected = NO;
+    self.shareBtn.hidden = YES;
+    [Display setHeaderLabelFont:self.adviceTitle withFont:@"MuseoSans-900"];
+    [Display setBodyLabelFont:self.adviceQuote withFont:@"MuseoSans-300"];
+    [Display fadeInView:self.adviceTitle toAlpha:1.0];
+    [Display fadeInView:self.adviceQuote toAlpha:1.0];
+    [Display fadeInView:self.adviceTable toAlpha:1.0];
+    [Display fadeInView:self.promptLabel toAlpha:1.0];
+    
+    [self.adviceTable setBackgroundView:nil];
+    [self.adviceTable setBackgroundColor:[UIColor clearColor]];
     
     [self setupMenuData];
-    
-    //Load Bkg
-    UIImage *image = [UIImage imageNamed:@"laughing"];
-    [self.adviceImage setImage:image];
     
     //Load Quote
     self.adviceQuote.textColor = [UIColor whiteColor];
@@ -53,12 +57,10 @@
                                                                  options:kNilOptions
                                                                    error:&err];
     
-    ColorPalette *palette = [[ColorPalette alloc] init];
     adviceArray = [[NSMutableArray alloc] init];
     AdviceItem *menuItem = [[AdviceItem alloc] init];
     Quote *curQuote = [[Quote alloc] init];
     
-    NSInteger colorCt = 0;
     for (NSDictionary *theDelusion in delusionsDic ) {
         menuItem = [[AdviceItem alloc] init];
         menuItem.delusion = theDelusion[@"delusion"];
@@ -73,14 +75,6 @@
             curQuote.relatedDelusions = theQuote[@"related-delusions"];
             [menuItem.quotes addObject:curQuote];
         }
-        switch(colorCt%4){
-            case 0: menuItem.bkgColor = palette.menuBlue0; break;
-            case 1: menuItem.bkgColor = palette.menuBlue1; break;
-            case 2: menuItem.bkgColor = palette.menuBlue2; break;
-            case 3: menuItem.bkgColor = palette.menuBlue3; break;
-            default: menuItem.bkgColor = palette.menuBlue0; break;
-        }
-        colorCt++;
         [adviceArray addObject:menuItem];
     }
 }
@@ -97,7 +91,7 @@
     if([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]) {
         SLComposeViewController *controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
         
-        [controller setInitialText:[NSString stringWithFormat:@"%@\n\n---\n%@ from Kadampa Meditation Center San Francisco's iPhone App", self.adviceQuote.text, self.adviceTitle.text] ];
+        [controller setInitialText:[NSString stringWithFormat:@"%@\n\n---\n %@ from Kadampa Meditation Center San Francisco's iPhone App", self.adviceQuote.text, self.adviceTitle.text] ];
         [controller addURL:[NSURL URLWithString:@"http://meditationinsanfrancisco.org"]];
         [controller addImage:[UIImage imageNamed:@"logo"]];
         
@@ -113,23 +107,36 @@
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return adviceArray.count;
 }
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return [Display setTableCellHeight];
+}
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"adviceCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    
+    DelusionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"delusionCell"];
+    if(!cell) {
+        [self.adviceTable registerNib:[UINib nibWithNibName:@"DelusionCell"bundle:nil] forCellReuseIdentifier:@"delusionCell"];
+        cell = [tableView dequeueReusableCellWithIdentifier:@"delusionCell"];
+    }
     
     AdviceItem *current = [adviceArray objectAtIndex:indexPath.row];
-    cell.textLabel.text = [current delusion];
-    cell.textLabel.textColor = [UIColor whiteColor];
-    cell.detailTextLabel.textColor = [UIColor whiteColor];
-    cell.backgroundColor = [current bkgColor];
+    cell.delusionLabel.text = [current delusion];
+    
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.backgroundColor = [UIColor clearColor];
     
     return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if(!self.adviceSelected) {
+        self.shareBtn.hidden = NO;
+        [Display bottomUpBounceIn:self.shareBtn];
+        self.adviceSelected = YES;
+    }
     self.curIndexPath = indexPath;
     AdviceItem *current = [adviceArray objectAtIndex:self.curIndexPath.row];
     int lowerBound = 0;
-    int upperBound = [current.quotes count];
+    NSUInteger upperBound = [current.quotes count];
     int rndValue = lowerBound + arc4random() % (upperBound - lowerBound);
     bool wasSeen = [[[adviceArray objectAtIndex:self.curIndexPath.row] quotes][rndValue] seen];
     
@@ -148,10 +155,7 @@
     [[[adviceArray objectAtIndex:self.curIndexPath.row] quotes][rndValue] setSeen:YES];
     self.adviceQuote.text = [NSString stringWithFormat:@"%@\n- %@", [current.quotes[rndValue] quotation], [current.quotes[rndValue] author]];
     self.adviceTitle.text = [NSString stringWithFormat:@"Good Advice for %@", current.delusion];
-    
-    //NSLog(@"%d", wasSeen);
 }
-
 
 #pragma mark - Shake Gesture
 - (BOOL)canBecomeFirstResponder {
@@ -169,17 +173,5 @@
 -(void)changeAdvice {
     [self tableView:self.adviceTable didSelectRowAtIndexPath:self.curIndexPath];
 }
-
-
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

@@ -11,11 +11,14 @@
 @interface MeditationTimerViewController () {
     int userChosenTime;
 }
+@property (weak, nonatomic) IBOutlet UIImageView *dharmaWheel;
+
+
+@property (weak, nonatomic) IBOutlet UILabel *timeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *timeDisplay;
 @property (weak, nonatomic) IBOutlet UIDatePicker *timePicker;
-@property (weak, nonatomic) IBOutlet UIImageView *meditationImage;
-@property (weak, nonatomic) IBOutlet UIImageView *whiteCircle;
-@property (weak, nonatomic) IBOutlet UILabel *meditationTitle;
+@property (weak, nonatomic) IBOutlet UIImageView *dial;
+
 
 @property (weak, nonatomic) IBOutlet UIButton *startCancelBtn;
 @property (weak, nonatomic) IBOutlet UIButton *pauseResumeBtn;
@@ -30,7 +33,7 @@
     int minutes = (secondsCount / 60) % 60;
     int hours = secondsCount / 3600;
     
-    NSString *timerOutput = [NSString stringWithFormat:@"%2d:%.2d:%.2d", hours, minutes, seconds];
+    NSString *timerOutput = [NSString stringWithFormat:@"%1d:%.2d:%.2d", hours, minutes, seconds];
     self.timeDisplay.text = timerOutput;
     
     if(secondsCount <= 0) {
@@ -60,7 +63,7 @@
     NSString *hours = [formatter stringFromDate:chosen];
     secondsCount = ([minutes intValue]*60) + ([hours intValue]*3600);
     userChosenTime = secondsCount;
-    NSString *timerOutput = [NSString stringWithFormat:@"%.2d:%.2d:00", [hours intValue], [minutes intValue] ];
+    NSString *timerOutput = [NSString stringWithFormat:@"%.1d:%.2d:00", [hours intValue], [minutes intValue] ];
     self.timeDisplay.text = timerOutput;
 
 }
@@ -110,29 +113,25 @@
     
     [super viewDidLoad];
     
+    
+    
+    self.timeDisplay.hidden = NO;
+    
     //Graphics
     self.timePicker.backgroundColor = [UIColor whiteColor];
-    UIImage *image = [UIImage imageNamed:@"hands"];
-    [self.meditationImage setImage:image];
-    UIImage *circle = [UIImage imageNamed:@"circle"];
-    [self.whiteCircle setImage:circle];
     
     [self.startCancelBtn setTitle:@"START" forState:UIControlStateNormal];
     [self.pauseResumeBtn setTitle:@"PAUSE" forState:UIControlStateNormal];
     
-    ColorPalette *palette = [[ColorPalette alloc] init];
-    self.timeDisplay.textColor = palette.themeBlue;
-    self.meditationTitle.textColor = palette.themeBlue;
+    self.timeDisplay.textColor = [UIColor whiteColor];
     
-    self.startCancelBtn.backgroundColor = palette.buttonBlue;
+    self.timePicker.tintColor = [UIColor whiteColor];
+    self.timePicker.backgroundColor = [UIColor clearColor];
+    
+    self.startCancelBtn.backgroundColor = [UIColor blackColor];
     [self.startCancelBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal ];
-    self.pauseResumeBtn.backgroundColor = palette.buttonBlack;
+    self.pauseResumeBtn.backgroundColor = [UIColor blackColor];
     [self.pauseResumeBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal ];
-    
-    
-    //Font
-    //[self.meditationTitle setFont:[UIFont fontWithName:@"MuseoSans_300" size:40]];
-    //[self.timeDisplay setFont:[UIFont fontWithName:@"MuseoSans_300" size:80]];
     
     NSURL *SoundURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"bell1" ofType:@"wav"]];
     AudioServicesCreateSystemSoundID((__bridge CFURLRef)SoundURL, &PlaySoundID);
@@ -148,6 +147,12 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+#pragma mark - picker
+/* DID SELECT ROW-ISH?*/
+/*-(UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view {
+        
+}*/
 
 /*
 #pragma mark - Navigation

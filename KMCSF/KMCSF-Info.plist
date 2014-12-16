@@ -25,7 +25,26 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIAppFonts</key>
-	<array/>
+	<array>
+		<string>MuseoSans_100.otf</string>
+		<string>MuseoSans_300.otf</string>
+		<string>MuseoSans_500.otf</string>
+		<string>MuseoSans_700.otf</string>
+		<string>MuseoSans_900.otf</string>
+		<string>MuseoSans_100_italic.otf</string>
+		<string>MuseoSans_300_italic.otf</string>
+		<string>MuseoSans_500_italic.otf</string>
+		<string>MuseoSans_700_italic.otf</string>
+		<string>MuseoSans_900_italic.otf</string>
+		<string>Lato-Hairline.ttf</string>
+		<string>Lato-HairlineItalic.ttf</string>
+		<string>Lato-Italic.ttf</string>
+		<string>Lato-Light.ttf</string>
+		<string>Lato-LightItalic.ttf</string>
+		<string>Lato-Regular.ttf</string>
+		<string>Lato-Thin.ttf</string>
+		<string>Lato-ThinItalic.ttf</string>
+	</array>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UIMainStoryboardFile~ipad</key>
@@ -47,5 +66,18 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>FacebookAppID</key>
+	<string>748183638592828</string>
+	<key>FacebookDisplayName</key>
+	<string>KMC SF</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb748183638592828</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>

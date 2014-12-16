@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "HomeItem.h"
+#import "Display.h"
 #import "QuoteViewController.h"
+#import "JNWSpringAnimation.h"
 
-@interface HomeViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@interface HomeViewController : UIViewController /*<UITableViewDelegate, UITableViewDataSource>*/
 
 @end

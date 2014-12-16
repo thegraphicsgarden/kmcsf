@@ -9,71 +9,158 @@
 #import "QuoteViewController.h"
 
 @interface QuoteViewController () {
-    
+    __block NSMutableArray *inspirationArray;
 }
 @property (weak, nonatomic) IBOutlet UIImageView *quoteImage;
+@property (weak, nonatomic) IBOutlet UILabel *inspirationTitle;
 @property (weak, nonatomic) IBOutlet UITableView *quoteTable;
 @property (weak, nonatomic) IBOutlet UILabel *inspirationQuote;
 @property (weak, nonatomic) IBOutlet UILabel *inspirationDate;
+@property (weak, nonatomic) IBOutlet UIButton *shareBtn;
+@property (weak, nonatomic) IBOutlet UILabel *loadingLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *dharmaWheel;
+
+@property (weak, nonatomic) NSIndexPath *curIndexPath;
+@property (strong, nonatomic) NSArray *tags;
 
 @end
 
 @implementation QuoteViewController {
-    NSMutableArray *quoteArray;
+    __block NSMutableArray *quoteArray;
     NSDictionary *quoteDetails;
     NSArray *quoteDates;
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
+-(NSString *)stripHashtagsFrom:(NSString *)string withTags:(NSArray *)hashTags{
+    for(int i = 0; i < [hashTags count]; i++){
+        string = [string stringByReplacingOccurrencesOfString:hashTags[i] withString:@""];
     }
-    return self;
+    return string;
+}
+-(NSString *)outputDateString:(QuoteItem *)item {
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"EEEE, MMMM d"];
+    return [NSString stringWithFormat:@"from %@", [dateFormatter stringFromDate:[item date]] ];
+}
+-(NSString *)stringByStrippingHTML:(NSString*)str
+{
+    NSRange r;
+    while ((r = [str rangeOfString:@"<[^>]+>" options:NSRegularExpressionSearch]).location != NSNotFound)
+    {
+        str = [str stringByReplacingCharactersInRange:r withString:@""];
+    }
+    return str;
+}
+
+-(void)fetchFacebookPosts {
+    quoteArray = [[NSMutableArray alloc] init];
+    
+    /* make the API call @"/164313873599055/posts"*/
+    //https://www.facebook.com/feeds/page.php?format=json&id=164313873599055
+    
+    NSString *pageId = @"164313873599055";
+    NSString *urlString = [NSString stringWithFormat:@"https://www.facebook.com/feeds/page.php?format=json&id=%@", pageId];
+    NSURL *url = [NSURL URLWithString:urlString];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    self.tags = [[NSArray alloc] initWithObjects:@"#meditation", nil];
+    
+    [NSURLConnection sendAsynchronousRequest:request
+                                       queue:[NSOperationQueue mainQueue]
+                           completionHandler:^(NSURLResponse *response,
+                                               NSData *data, NSError *connectionError)
+     {
+         QuoteItem *menuItem = [[QuoteItem alloc] init];
+         if (data.length > 0 && connectionError == nil)
+         {
+             NSDictionary *fbFeed = [NSJSONSerialization JSONObjectWithData:data
+                                                                       options:0
+                                                                         error:NULL];
+             NSMutableArray *entries = [fbFeed objectForKey:@"entries"];
+             
+             NSString *content, *dateTimeString;
+             BOOL initial = YES;
+             for(int i = 0; i < [entries count]; i++){
+                 content = [self stringByStrippingHTML:[entries[i] objectForKey:@"content"]];
+                 if([content rangeOfString:self.tags[0]].location == NSNotFound) {
+                     //No posts found with hashtag value
+                 } else {
+                     menuItem = [[QuoteItem alloc] init];
+                     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                     [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+                     
+                     menuItem.quote = content;
+                     
+                     dateTimeString = [entries[i] objectForKey:@"published"];
+                     dateTimeString = [dateTimeString stringByReplacingOccurrencesOfString:@"T" withString:@" "];
+                     dateTimeString = [dateTimeString stringByReplacingOccurrencesOfString:@"+00:00" withString:@""];
+                     menuItem.date = [dateFormatter dateFromString:dateTimeString];
+                     
+                     if(initial){
+                         self.inspirationQuote.text = [self stripHashtagsFrom:[menuItem quote] withTags:self.tags];
+                         self.inspirationDate.text = [self outputDateString:menuItem];
+                         initial = NO;
+                     }
+                     [quoteArray addObject:menuItem];
+                 }
+             }
+             [self.quoteTable performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+             
+             //Fade in labels now that we have the data we need
+             [Display fadeInView:self.inspirationTitle toAlpha:1.0];
+             [Display fadeInView:self.inspirationDate toAlpha:1.0];
+             [Display fadeInView:self.inspirationQuote toAlpha:1.0];
+             [Display fadeInView:self.quoteTable toAlpha:1.0];
+             
+             //Share button appear and compensate by 600 for initial start off of
+             self.shareBtn.hidden = NO;
+             [Display bottomUpBounceIn:self.shareBtn];
+         } else {
+             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Sorry. Could not retrieve quotes. Connection Error." message:@"Try again later." delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil];
+             [alertView show];
+         }
+         //Loaded so hide load wheel
+         [Display fadeOutView:self.loadingLabel];
+         [Display fadeOutView:self.dharmaWheel];
+         [Display bounceOutViewScale:self.loadingLabel];
+         [Display bounceOutViewScale:self.dharmaWheel];
+         [Display runSpinAnimationOnView:self.dharmaWheel duration:5.0 rotations:.25 repeat:0];
+     }];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.quoteTable.rowHeight = 61;
-    self.quoteTable.alwaysBounceVertical = NO;
-    self.quoteTable.separatorStyle = UITableViewCellSeparatorStyleNone;
+    //Settting up Header(s)
+    [Display setHeaderLabelFont:self.inspirationTitle withFont:@"MuseoSans-900"];
+    [Display setSubHeaderLabelFont:self.inspirationDate withFont:@"MuseoSans-700"];
+    [Display setBodyLabelFont:self.inspirationQuote withFont:@"MuseoSans-300"];
+    [Display setSubHeaderLabelFont:self.loadingLabel withFont:@"MuseoSans-700"];
     
-    [self setupMenuData];
+    //Transparent Labels
+    [self.inspirationTitle setAlpha:0.0f];
+    [self.inspirationDate setAlpha:0.0f];
+    [self.inspirationQuote setAlpha:0.0f];
+    [self.quoteTable setAlpha:0.0f];
     
-    NSURL *url = [[NSBundle mainBundle] URLForResource:@"Quotes" withExtension:@"plist"];
-    //load the plist into the dictionary
-    quoteDetails = [NSDictionary dictionaryWithContentsOfURL:url];
-    //create an array with just the keys
-    quoteDates = quoteDetails.allKeys;
+    //Show loading wheel
+    [self.loadingLabel setAlpha:1.0f];
+    [self.dharmaWheel setAlpha:1.0f];
+    
+    [Display bounceInViewScale:self.loadingLabel];
+    [Display bounceInViewScale:self.dharmaWheel];
+    
+    //Rotate the loading wheel of dharma
+    [Display runSpinAnimationOnView:self.dharmaWheel duration:5.0 rotations:.25 repeat:HUGE_VALF];
 
-    //Load Today's Quote
-    QuoteItem *todaysQuote = [[QuoteItem alloc] init];
-    todaysQuote = [quoteArray objectAtIndex:0];
+    //Hide button before loading posts
+    self.shareBtn.hidden = YES;
     
-    //Setup and Deliver the Date
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"EEEE, MMMM dd"];
-    self.inspirationDate.text = [NSString stringWithFormat:@"from Today (%@)", [dateFormatter stringFromDate:[todaysQuote date]] ];
+    //Make Table bkg transparent
+    [self.quoteTable setBackgroundColor:[UIColor clearColor]];
     
-    //Setup and Deliver the Quote, Author, and (if needed) text
-    NSString *quoteString = [NSString stringWithFormat:@"%@\n- %@", [todaysQuote quote], [todaysQuote author]];
-    if([todaysQuote text].length != 0){
-        quoteString = [NSString stringWithFormat:@"%@, %@", quoteString, [todaysQuote text]];
-    }
-    self.inspirationQuote.text = [NSString stringWithFormat:@"%@", quoteString];
-    
-    //Setup the Color scheme and other formatting
-    self.inspirationQuote.textColor = [UIColor whiteColor];
-    self.inspirationQuote.numberOfLines = 0;
-    self.inspirationQuote.frame = CGRectMake(20,20,200,800);
-    [self.inspirationQuote sizeToFit];
-    
-    //Load Bkg
-    UIImage *image = [UIImage imageNamed:@"laughing"];
-    [self.quoteImage setImage:image];
-    
+    [self fetchFacebookPosts];
 }
+
 -(void)setupMenuData {
     //Load and style the adviceArray with JSON file
     NSError* err = nil;
@@ -81,29 +168,19 @@
     NSDictionary* inspirationsDic = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:dataPath]
                                                                  options:kNilOptions
                                                                    error:&err];
-    
-    ColorPalette *palette = [[ColorPalette alloc] init];
+
     quoteArray = [[NSMutableArray alloc] init];
     QuoteItem *menuItem = [[QuoteItem alloc] init];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"MM-dd-yyyy"];
     
-    NSInteger colorCt = 0;
     for(NSDictionary *theQuote in inspirationsDic) {
         menuItem = [[QuoteItem alloc] init];
         menuItem.date = [dateFormatter dateFromString: theQuote[@"date"]];
         menuItem.quote = theQuote[@"quote"];
         menuItem.author = theQuote[@"author"];
         menuItem.text = theQuote[@"text"];
-        //NSLog(@"%@",menuItem.date);
-        switch(colorCt%4){
-            case 0: menuItem.bkgColor = palette.menuBlue0; break;
-            case 1: menuItem.bkgColor = palette.menuBlue1; break;
-            case 2: menuItem.bkgColor = palette.menuBlue2; break;
-            case 3: menuItem.bkgColor = palette.menuBlue3; break;
-            default: menuItem.bkgColor = palette.menuBlue0; break;
-        }
-        colorCt++;
+       
         [quoteArray addObject:menuItem];
     }
 }
@@ -116,80 +193,51 @@
 
 #pragma mark - Social Media Sharing
 - (IBAction)shareAction:(id)sender {
-    //NSLog(@"share");
     if([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook]) {
         SLComposeViewController *controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
         
         [controller setInitialText:[NSString stringWithFormat:@"%@\n\n---\nInspirational Quote from Kadampa Meditation Center San Francisco's iPhone App", self.inspirationQuote.text] ];
-        [controller addURL:[NSURL URLWithString:@"http://meditationinsanfrancisco.org"]];
+        [controller addURL:[NSURL URLWithString:@"https://www.facebook.com/KMCSanFrancisco"]];
         [controller addImage:[UIImage imageNamed:@"logo"]];
         
         [self presentViewController:controller animated:YES completion:Nil];
     }
 }
 
-
-
 #pragma mark - Table view Data Source
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return quoteDetails.count;
+    return quoteArray.count;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return [Display setTableCellHeight];
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    static NSString *CellIdentifier = @"quoteCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    CustomSubtitleCell *cell = [tableView dequeueReusableCellWithIdentifier:@"customSubtitleCell"];
+    if(!cell) {
+        [self.quoteTable registerNib:[UINib nibWithNibName:@"CustomSubtitleCell"bundle:nil] forCellReuseIdentifier:@"customSubtitleCell"];
+        cell = [tableView dequeueReusableCellWithIdentifier:@"customSubtitleCell"];
+    }
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"EEEE, MMMM dd"];
-    
-    //Retrieve Image
-    //UIImage *myImage = [UIImage imageNamed:@"Quotes"];
-    //[cell.imageView setImage:myImage];
+    [dateFormatter setDateFormat:@"EEE, MMM dd"];
     
     QuoteItem *current = [quoteArray objectAtIndex:indexPath.row];
-    NSComparisonResult dateComparison = [[NSDate date] compare:[current date] ];
-    //NSLog(@"%d",dateComparison);
-    if(dateComparison==NSOrderedSame) {
-        cell.textLabel.text = @"Today";
-    } else {
-        cell.textLabel.text = [dateFormatter stringFromDate:[current date]];
-    }
-    cell.detailTextLabel.text = [current quote];
-    cell.textLabel.textColor = [UIColor whiteColor];
-    cell.detailTextLabel.textColor = [UIColor whiteColor];
-    cell.backgroundColor = [current bkgColor];
+    cell.title.text = [current quote];
+    cell.subTitle.text = [dateFormatter stringFromDate:[current date]];
+
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.backgroundColor = [UIColor clearColor];
     
     return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    //self.curIndexPath = indexPath;
+    self.curIndexPath = indexPath;
     QuoteItem *current = [quoteArray objectAtIndex:indexPath.row];
-
-    //Setup and Deliver the Quote, Author, and (if needed) text
-    //Setup and Deliver the Quote, Author, and (if needed) text
-    NSString *quoteString = [NSString stringWithFormat:@"%@\n- %@", [current quote], [current author]];
-    if([current text].length != 0){
-        quoteString = [NSString stringWithFormat:@"%@, %@", quoteString, [current text]];
-    }
-    self.inspirationQuote.text = [NSString stringWithFormat:@"%@", quoteString];
-    
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"EEEE, MMMM dd"];
-    self.inspirationDate.text = [NSString stringWithFormat:@"from %@", [dateFormatter stringFromDate:[current date]] ];
-
+    self.inspirationQuote.text = [self stripHashtagsFrom:[current quote] withTags:self.tags ];
+    self.inspirationDate.text = [self outputDateString:current];
 }
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

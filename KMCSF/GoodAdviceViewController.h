@@ -9,7 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "AdviceItem.h"
 #import "Quote.h"
-#import "ColorPalette.h"
+#import "Display.h"
+#import "DelusionCell.h"
+
 #import <Social/Social.h>
 #import <Accounts/Accounts.h>
 #import <CoreData/CoreData.h>
