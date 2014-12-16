@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <pop/POP.h>
 #import "JNWSpringAnimation.h"
 
 @interface Display : NSObject

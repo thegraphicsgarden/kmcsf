@@ -68,16 +68,20 @@ static CGFloat deviceScreenWidth;
 
 //Bouncing the scales for Labels and Images
 + (void)bounceInViewScale:(UIView *)view {
-    JNWSpringAnimation *scale = [JNWSpringAnimation animationWithKeyPath:@"transform.scale"];
+    /*JNWSpringAnimation *scale = [JNWSpringAnimation animationWithKeyPath:@"transform.scale"];
     scale.damping = 20.0;
     scale.stiffness = 300.0;
     scale.mass = 6.0;
     scale.fromValue = @(0.5);
     scale.toValue = @(1.0);
     [view.layer addAnimation:scale forKey:scale.keyPath];
-    view.transform = CGAffineTransformTranslate(view.transform, 1.0, 1.0);
+    view.transform = CGAffineTransformTranslate(view.transform, 1.0, 1.0);*/
     
-    
+    POPSpringAnimation *scale = [POPSpringAnimation animationWithPropertyNamed:kPOPViewScaleXY];
+    scale.toValue = [NSValue valueWithCGPoint:CGPointMake(1.2, 1.2)];
+    scale.springBounciness = 20.0f; // Between 0-20
+    scale.springSpeed = 1.0f; // Between 0-20
+    [view pop_addAnimation:scale forKey:@"scale"];
 }
 + (void)bounceOutViewScale:(UIView *)view {
     JNWSpringAnimation *scale = [JNWSpringAnimation animationWithKeyPath:@"transform.scale"];
